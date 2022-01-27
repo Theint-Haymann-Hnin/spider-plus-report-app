@@ -31,11 +31,50 @@ export default {
   methods: {
     submit() {
       fetch('report.json')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(error => console.error(error));
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+        })
+        .catch((error) => console.error(error))
+      let currentdate = new Date()
+      let formatted_date =
+        currentdate.getDate() +
+        '-' +
+        (currentdate.getMonth() + 1) +
+        '-' +
+        currentdate.getFullYear()
+      const encoded = window.btoa(
+        '{' +
+          '"' +
+          formatted_date +
+          '"' +
+          ':' +
+          '{' +
+          '"' +
+          this.selected +
+          '"' +
+          '}'
+      )
+      $.ajax({
+        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
+        type: 'PUT',
+        headers: {
+          Authorization: 'Bearer  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',
+        },
+        data: JSON.stringify({
+          message: 'testing',
+          content: encoded,
+          sha: '15ebd3d2163911085dbd1a8237619cbb037284d7',
+        }),
+        success: function (result) {
+          console.log(result.content)
+          $('#response').append(JSON.stringify(result))
+        },
+        error: function (error) {
+          console.log('error.responseJSON')
+        },
+      })
+      const decoded = window.atob(encoded)
     },
   },
 }
