@@ -26,18 +26,19 @@ export default {
   computed: {},
   data: {
     selected: '',
+    getname: ''
   },
-  beforeMount() {
-    this.getName()
-  },
-
+   
   methods: {
-    getName: function () {
-      console.log(this.selected)
-    },
     submit() {
-      this.$router.push({ name: 'scmreport', params: { value: this.selected } })
+       localStorage.setItem('login-name', JSON.stringify(this.selected))
+         this.getname = JSON.parse(localStorage.getItem('login-name'));
+        // this.$router.push({ name: 'scmreport', params: { value: this.selected } })
+        if(this.getname != null){
+          this.$router.push({ name: 'scmreport', params: { value: this.selected } })
+        }
     },
+    
   },
 }
 </script>
