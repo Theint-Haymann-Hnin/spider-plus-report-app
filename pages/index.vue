@@ -24,21 +24,26 @@
 export default {
   name: 'IndexPage',
   computed: {},
-  data: {
-    selected: '',
-    getname: ''
+  data() {
+    return {
+      selected: '',
+      getname: '',
+    }
   },
-   
   methods: {
     submit() {
-       localStorage.setItem('login-name', JSON.stringify(this.selected))
-         this.getname = JSON.parse(localStorage.getItem('login-name'));
-        // this.$router.push({ name: 'scmreport', params: { value: this.selected } })
-        if(this.getname != null){
-          this.$router.push({ name: 'scmreport', params: { value: this.selected } })
-        }
+      localStorage.setItem('login-name', JSON.stringify(this.selected))
+      this.getname = localStorage.getItem('login-name')
+      this.$router.push({ name: 'scmreport', params: { value: this.selected } })
     },
-    
+    redirectPage() {
+      const username = localStorage.getItem('login-name')
+      if (!username) return
+      this.$router.push({ name: 'scmreport', params: { value: username } })
+    },
+  },
+  mounted() {
+    this.redirectPage()
   },
 }
 </script>

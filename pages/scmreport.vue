@@ -130,7 +130,7 @@
     </div>
     <!-- morning report -->
     <!-- evening report (1 to 3) -->
-    <div class="row mt-5" v-if="this.currenttime > 12 && this.currenttime < 16">
+    <div class="row mt-5" v-if="this.currenttime > 12 && this.currenttime < 24">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">

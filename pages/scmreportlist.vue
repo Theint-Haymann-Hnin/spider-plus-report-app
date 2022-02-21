@@ -40,7 +40,7 @@ export default {
     }),
   },
   mounted() {
-    this.username = JSON.parse(localStorage.getItem('name'));
+    this.username = JSON.parse(localStorage.getItem('name'))
   },
   methods: {},
 }
