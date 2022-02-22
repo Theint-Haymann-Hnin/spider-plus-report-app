@@ -11,7 +11,7 @@
           <option value="Min Aung Paing">Min Aung Paing</option>
           <option value="Theint Haymann Hnin">Theint Haymann Hnin</option>
         </select>
-        <button type="button" class="btn btn-success mt-5" @click="submit()">
+        <button type="button" class="btn btn-success mt-5" @click="submit()" :disabled="selected=== ''">
           Submit
         </button>
       </div>

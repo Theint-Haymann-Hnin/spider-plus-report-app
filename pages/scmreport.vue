@@ -2,7 +2,7 @@
   <div>
     <navbar></navbar>
     <!-- scm report (12 to 5) -->
-    <div v-if="this.currenttime > 11 && this.currenttime < 18">
+    <div v-if="this.currenttime > 11 && this.currenttime < 13">
       <div class="row mt-5">
         <div class="col-md-12">
           <button class="show-btn btn btn-success float-right">
@@ -26,6 +26,7 @@
                     placeholder="Task"
                     v-model="inputs.task"
                   />
+                  <br />
                 </div>
                 <div class="col-md-3">
                   <input
@@ -35,7 +36,6 @@
                     v-model="inputs.progress"
                   />
                 </div>
-
                 <div class="col-md-2">
                   <input
                     type="text"
@@ -63,7 +63,11 @@
               </div>
               <span> </span>
             </div>
-            <button class="btn btn-success" @click.prevent="addReport()">
+            <button
+              class="btn btn-success"
+              @click.prevent="addReport()"
+              :disabled="inputs.task && inputs.progress && inputs.hour === ''"
+            >
               Create
             </button>
           </form>
@@ -109,7 +113,11 @@
               <label for="">その他共有など(any sharing)</label>
               <input type="text" class="form-control" v-model="input03" />
             </div>
-            <button class="btn btn-success" @click="createMorningreport()">
+            <button
+              class="btn btn-success"
+              @click="createMorningreport()"
+              :disabled="input01 && input02 && input03 === ''"
+            >
               Create
             </button>
           </div>
@@ -153,7 +161,11 @@
               >
               <input type="text" class="form-control" v-model="input3" />
             </div>
-            <button class="btn btn-success" @click="createEveningreport()">
+            <button
+              class="btn btn-success"
+              @click="createEveningreport()"
+              :disabled="input1 && input2 && input3 === ''"
+            >
               Create
             </button>
           </div>
@@ -198,6 +210,9 @@ export default {
     window.onpopstate = function () {
       window.history.go(1)
     }
+  },
+  created() {
+    this.name = localStorage.getItem('login-name').replace(/(^"|"$)/g, '')
   },
 
   data() {
@@ -332,11 +347,13 @@ export default {
       })
       const decoded = window.atob(encoded)
     },
+    removeReport(index) {
+      this.reports.splice(index, 1)
+    },
     createMorningreport() {
       this.morningreports.push(this.input01, this.input02, this.input03)
       console.log(this.morningreports)
       this.flag = true
-
       let currentdate = new Date()
       let formatted_date =
         currentdate.getDate() +
