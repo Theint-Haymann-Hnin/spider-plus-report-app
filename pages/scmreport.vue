@@ -2,14 +2,14 @@
   <div>
     <navbar></navbar>
     <!-- scm report (12 to 5) -->
-    <div v-if="this.currenttime > 11 && this.currenttime < 13">
+    <!-- <div v-if="this.currenttime > 8 && this.currenttime < 10"> -->
+      <div>
       <div class="row mt-5">
         <div class="col-md-12">
-          <button class="show-btn btn btn-success float-right">
+         
             <router-link to="/scmreportlist" class="text-white">
-              Show Report List</router-link
+             <button class="show-btn btn btn-success float-right">Show Report List </button></router-link
             >
-          </button>
         </div>
       </div>
       <div class="title"><span class="ml-5">Daily Report</span></div>
@@ -19,7 +19,7 @@
           <form action="">
             <div class="form-group" v-for="(input, k) in inputs" :key="k">
               <div class="row mt-3">
-                <div class="col-md-6">
+                <div class="col-md-5">
                   <input
                     type="text"
                     class="form-control"
@@ -44,7 +44,8 @@
                     v-model="inputs.hour"
                   />
                 </div>
-                <button
+                <div class="col-md-2">
+                  <button
                   type="button"
                   class="btn btn-danger"
                   @click="remove(k)"
@@ -54,12 +55,13 @@
                 </button>
                 <button
                   type="button"
-                  class="btn btn-success ml-3"
+                  class="btn btn-success ml-2"
                   @click="add(k)"
                   v-show="k == inputs.length - 1"
                 >
                   +
                 </button>
+                </div>
               </div>
               <span> </span>
             </div>
@@ -95,7 +97,8 @@
     </div>
     <!-- scm report -->
     <!-- morning report (8 to 11)-->
-    <div class="row mt-5" v-if="this.currenttime > 7 && this.currenttime < 12">
+    <div class="row mt-5" v-if="this.currenttime > 13 && this.currenttime < 24">
+      <!-- <div class="row mt-5" > -->
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -124,21 +127,30 @@
         </div>
         <div class="mt-5">
           <p>{{ this.name }}</p>
-          <p>Morning report</p>
-          <div class="mb-2" v-if="flag == true">
+          <div
+            class="mb-2"
+            v-for="(morningreport, index) in fff"
+            :key="index"
+          >
+            <p>Morning report</p>
             <span
-              >・今日やること<br />=>{{ input01 }}<br /><br />
-              ・困っていること<br />=>{{ input02 }}<br /><br />
-              ・その他共有など<br />=>{{ input03 }}</span
+              >・今日やること<br />=>{{ morningreport.input01 }}<br /><br />
+              ・困っていること<br />=>{{ morningreport.input02 }}<br /><br />
+              ・その他共有など<br />=>{{ morningreport.input03 }}</span
             >
           </div>
         </div>
       </div>
-      <div class="col-md-3"></div>
+      <div class="col-md-3">
+          <router-link to="/morningreportlist" class="text-white"><button class="show-btn btn btn-success float-right"> Show Report List </button>
+           </router-link
+          >
+      </div>
     </div>
     <!-- morning report -->
     <!-- evening report (1 to 3) -->
-    <div class="row mt-5" v-if="this.currenttime > 12 && this.currenttime < 24">
+    <div class="row mt-5" v-if="this.currenttime > 13 && this.currenttime < 24">
+      <!-- <div class="row mt-5"> -->
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -172,18 +184,29 @@
         </div>
         <div class="mt-5">
           <p>{{ this.name }}</p>
-          <p>Evening report</p>
-          <div class="mb-2" v-if="flag1 == true">
+          <div
+            class="mb-2"
+            v-for="(eveningreport, index) in ggg"
+            :key="index"
+          >
+            <p>Evening report</p>
             <span
-              >・完了チケット一覧<br />=>{{ input1 }}<br /><br />
-              ・対応中チケット一覧 ％<br />=>{{ input2 }}<br /><br />
-              ・困っていること/レビューしてほしいもの<br />=>{{ input3 }}</span
+              >・完了チケット一覧<br />=>{{eveningreport.input1}}<br /><br />
+              ・対応中チケット一覧 ％<br />=>{{eveningreport.input2}}<br /><br />
+              ・困っていること/レビューしてほしいもの<br />=>{{
+              eveningreport.input3
+              }}</span
             >
           </div>
         </div>
       </div>
-
-      <div class="col-md-3"></div>
+      <div class="col-md-3">
+          <router-link to="/eveningreportlist" class="text-white"> <button class="show-btn btn btn-success float-right"> Show Report List </button>
+           </router-link
+          >
+         <!-- {{this.ggg}} <br> -->
+      <!-- <br> {{this.ggg[0]}} -->
+      </div>
     </div>
     <!-- evening report -->
   </div>
@@ -212,7 +235,7 @@ export default {
     }
   },
   created() {
-    this.name = localStorage.getItem('login-name').replace(/(^"|"$)/g, '')
+     this.name = JSON.parse(localStorage.getItem('login-name'))
   },
 
   data() {
@@ -232,17 +255,22 @@ export default {
       input01: '',
       input02: '',
       input03: '',
-      flag: false,
       sha: '',
       morningreports: [],
       input1: '',
       input2: '',
       input3: '',
-      flag1: false,
       sha1: '',
       eveningreports: [],
+      eveningreport: '',
       currenttime: '',
+      ggg: '',
+      fff: ''
     }
+  },
+  mounted(){
+     this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
+      this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
   },
   methods: {
     getTime: function () {
@@ -250,7 +278,6 @@ export default {
       this.currenttime = currentdate.getHours()
       console.log(this.currenttime)
     },
-
     getData() {
       console.log(this.name)
     },
@@ -264,17 +291,48 @@ export default {
     remove(index) {
       this.inputs.splice(index, 1)
     },
-
     addReport() {
       this.reports.push(this.inputs)
+      console.log('scmreport', this.reports)
+      // console.log('JSON', JSON.stringify(this.reports))
+       this.name = JSON.parse(localStorage.getItem('login-name'))
+       console.log('name',this.name)
+
+      // const data =JSON.stringify(object);
+      // console.log('data',data)
+     const result =   JSON.stringify(this.reports.map(res=>({task:res.task, progress:res.progress,hour:res.hour}))
+    .reduce((map, obj, i) => (map[i] = obj, map), {}))
+    console.log('result',result);
+
+
+    localStorage.setItem('data', result)
+
+
+
+    // localStorage.setItem('data1', JSON.stringify(this.reports))
+
+
+
+     const data =localStorage.getItem('data')
+     console.log('ddddddddddddd', data)
+      // const data ={date: 
+      // {name: localStorage.getItem('data')}}
+     
+
+      const encoded = window.btoa(unescape(encodeURIComponent(data)));
+        console.log('encoded data',encoded) 
+
+      const decoded = window.atob(unescape(encodeURIComponent(encoded)));
+      console.log('decoded data',decoded)
+
       this.$store.commit('storeReport', this.inputs)
-      fetch('report.json')
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-        })
-        .catch((error) => console.error(error))
-      localStorage.setItem('name', JSON.stringify(this.name))
+      // fetch('report.json')
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log(data)
+      //   })
+      //   .catch((error) => console.error(error))
+      // localStorage.setItem('name', JSON.stringify(this.name))
       let currentdate = new Date()
       let formatted_date =
         currentdate.getDate() +
@@ -282,38 +340,12 @@ export default {
         (currentdate.getMonth() + 1) +
         '-' +
         currentdate.getFullYear()
-      const encoded = window.btoa(
-        '{' +
-          '"' +
-          formatted_date +
-          '"' +
-          ':' +
-          '{' +
-          '"' +
-          this.name +
-          ':' +
-          '{' +
-          '"task"' +
-          ':' +
-          this.inputs.task +
-          ',' +
-          '"progress"' +
-          ':' +
-          this.inputs.progress +
-          ',' +
-          '"hour"' +
-          ':' +
-          this.inputs.hour +
-          '}' +
-          '}' +
-          '}'
-      )
 
-      $.ajax({
+         $.ajax({
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
         type: 'GET',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         datatype: 'xml',
         success: function (result) {
@@ -330,7 +362,7 @@ export default {
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
         type: 'PUT',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         data: JSON.stringify({
           message: 'update json',
@@ -345,15 +377,29 @@ export default {
           console.log('error.responseJSON')
         },
       })
-      const decoded = window.atob(encoded)
     },
+
     removeReport(index) {
       this.reports.splice(index, 1)
     },
     createMorningreport() {
-      this.morningreports.push(this.input01, this.input02, this.input03)
+      this.morningreports.push({
+        input01: this.input01,
+        input02: this.input02,
+        input03: this.input03,
+      })
+        localStorage.setItem('Morningreport', JSON.stringify(this.morningreports))
+
+       this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
+      this.$store.commit('storeMorningReport', [
+        this.input01,
+        this.input02,
+        this.input03,
+      ])
       console.log(this.morningreports)
-      this.flag = true
+      this.input01 = ''
+      this.input02 = ''
+      this.input03 = ''
       let currentdate = new Date()
       let formatted_date =
         currentdate.getDate() +
@@ -428,9 +474,24 @@ export default {
       const decoded = window.atob(encoded)
     },
     createEveningreport() {
-      this.eveningreports.push(this.input1, this.input2, this.input3)
-      console.log(this.eveningreports)
-      this.flag1 = true
+      this.eveningreports.push({
+        input1: this.input1,
+        input2: this.input2,
+        input3: this.input3,
+      })
+      localStorage.setItem('Eveningreport', JSON.stringify(this.eveningreports))
+
+       this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
+         
+
+      this.$store.commit('storeEveningReport', [
+        this.input1,
+        this.input2,
+        this.input3,
+      ])
+      this.input1 = ''
+      this.input2 = ''
+      this.input3 = ''
       let currentdate = new Date()
       let formatted_date =
         currentdate.getDate() +
