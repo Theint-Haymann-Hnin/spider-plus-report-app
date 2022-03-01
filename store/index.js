@@ -5,6 +5,7 @@ export const state = () => {
         currentreport: null,
         eveningreport: null,
         morningreport: null,
+        fetchdata: null,
 
     }
 }
@@ -12,16 +13,20 @@ export const state = () => {
 export const mutations = {
     storeReport(state, payload) {
         state.currentreport = payload
-        console.log(state.currentreport) //array
+        console.log(state.currentreport)
     },
-    
+
     storeEveningReport(state, payload) {
         state.eveningreport = payload
-        console.log('evening report in state',state.eveningreport) 
     },
-    
+
     storeMorningReport(state, payload) {
         state.morningreport = payload
+    },
+    
+    fetchData(state, payload) {
+        state.fetchdata = payload
+        console.log('fetchdata  in state', state.fetchdata)
     },
 }
 

@@ -2,15 +2,33 @@
   <div>
     <navbar></navbar>
     <!-- scm report (12 to 5) -->
-    <!-- <div v-if="this.currenttime > 8 && this.currenttime < 10"> -->
-      <div>
-      <div class="row mt-5">
-        <div class="col-md-12">
-         
-            <router-link to="/scmreportlist" class="text-white">
-             <button class="show-btn btn btn-success float-right">Show Report List </button></router-link
-            >
+    <div v-if="this.currenttime > 11 && this.currenttime < 13">
+      <div class="row mt-2">
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+          <router-link to="/scmmonthlyreport" class="text-white">
+            <button class="show-btn btn btn-success">
+              Monthly Report List
+            </button></router-link
+          >
         </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+          <router-link to="/scmreportlist" class="text-white">
+            <button class="show-btn btn btn-success">
+              Show Report List
+            </button></router-link
+          >
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-12"></div>
       </div>
       <div class="title"><span class="ml-5">Daily Report</span></div>
       <div class="row mt-3">
@@ -46,21 +64,21 @@
                 </div>
                 <div class="col-md-2">
                   <button
-                  type="button"
-                  class="btn btn-danger"
-                  @click="remove(k)"
-                  v-show="k || (!k && inputs.length > 1)"
-                >
-                  -
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-success ml-2"
-                  @click="add(k)"
-                  v-show="k == inputs.length - 1"
-                >
-                  +
-                </button>
+                    type="button"
+                    class="btn btn-danger"
+                    @click="remove(k)"
+                    v-show="k || (!k && inputs.length > 1)"
+                  >
+                    -
+                  </button>
+                  <!-- <button
+                    type="button"
+                    class="btn btn-success ml-2"
+                    @click="add(k)"
+                    v-show="k == inputs.length - 1"
+                  >
+                    +
+                  </button> -->
                 </div>
               </div>
               <span> </span>
@@ -80,25 +98,29 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
           <p>{{ this.name }}</p>
-          <div v-for="(report, index) in reports" :key="index" class="mb-2">
+          <!-- <div v-for="(report, index) in reports" :key="index" class="mb-2">
             <span>=>{{ inputs.task }}</span>
-            <span>({{ inputs.progress }}%)</span>
-            <span>({{ inputs.hour }}hrs)</span
+            <span>({{ inputs.progress }})</span>
+            <span>({{ inputs.hour }})</span
             ><button
               class="btn btn-danger btn-sm ml-3"
               @click.prevent="removeReport(index)"
             >
               -
             </button>
+          </div> -->
+          <div v-for="(report, index) in scmreport" :key="index" class="mb-2">
+            <span>=>{{ report.task }}</span>
+            <span>({{ report.progress }})</span>
+            <span>({{ report.hour }})</span>
           </div>
           <div class="col-md-2"></div>
         </div>
       </div>
     </div>
     <!-- scm report -->
-    <!-- morning report (8 to 11)-->
-    <div class="row mt-5" v-if="this.currenttime > 13 && this.currenttime < 24">
-      <!-- <div class="row mt-5" > -->
+    <!-- morning report-->
+    <div class="row mt-5" v-if="this.currenttime > 7 && this.currenttime < 11">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -127,11 +149,7 @@
         </div>
         <div class="mt-5">
           <p>{{ this.name }}</p>
-          <div
-            class="mb-2"
-            v-for="(morningreport, index) in fff"
-            :key="index"
-          >
+          <div class="mb-2" v-for="(morningreport, index) in fff" :key="index">
             <p>Morning report</p>
             <span
               >・今日やること<br />=>{{ morningreport.input01 }}<br /><br />
@@ -142,15 +160,16 @@
         </div>
       </div>
       <div class="col-md-3">
-          <router-link to="/morningreportlist" class="text-white"><button class="show-btn btn btn-success float-right"> Show Report List </button>
-           </router-link
-          >
+        <router-link to="/morningreportlist" class="text-white"
+          ><button class="show-btn btn btn-success float-right">
+            Show Report List
+          </button>
+        </router-link>
       </div>
     </div>
     <!-- morning report -->
-    <!-- evening report (1 to 3) -->
-    <div class="row mt-5" v-if="this.currenttime > 13 && this.currenttime < 24">
-      <!-- <div class="row mt-5"> -->
+    <!-- evening report  -->
+    <div class="row mt-5" v-if="this.currenttime > 11 && this.currenttime < 16">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -184,28 +203,25 @@
         </div>
         <div class="mt-5">
           <p>{{ this.name }}</p>
-          <div
-            class="mb-2"
-            v-for="(eveningreport, index) in ggg"
-            :key="index"
-          >
+          <div class="mb-2" v-for="(eveningreport, index) in ggg" :key="index">
             <p>Evening report</p>
             <span
-              >・完了チケット一覧<br />=>{{eveningreport.input1}}<br /><br />
-              ・対応中チケット一覧 ％<br />=>{{eveningreport.input2}}<br /><br />
+              >・完了チケット一覧<br />=>{{ eveningreport.input1 }}<br /><br />
+              ・対応中チケット一覧 ％<br />=>{{ eveningreport.input2
+              }}<br /><br />
               ・困っていること/レビューしてほしいもの<br />=>{{
-              eveningreport.input3
+                eveningreport.input3
               }}</span
             >
           </div>
         </div>
       </div>
       <div class="col-md-3">
-          <router-link to="/eveningreportlist" class="text-white"> <button class="show-btn btn btn-success float-right"> Show Report List </button>
-           </router-link
-          >
-         <!-- {{this.ggg}} <br> -->
-      <!-- <br> {{this.ggg[0]}} -->
+        <router-link to="/eveningreportlist" class="text-white">
+          <button class="show-btn btn btn-success float-right">
+            Show Report List
+          </button>
+        </router-link>
       </div>
     </div>
     <!-- evening report -->
@@ -235,7 +251,7 @@ export default {
     }
   },
   created() {
-     this.name = JSON.parse(localStorage.getItem('login-name'))
+    this.name = JSON.parse(localStorage.getItem('login-name'))
   },
 
   data() {
@@ -265,12 +281,22 @@ export default {
       eveningreport: '',
       currenttime: '',
       ggg: '',
-      fff: ''
+      fff: '',
+      scmreport: '',
+      DATA: '',
     }
   },
-  mounted(){
-     this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
-      this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
+  mounted() {
+    this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
+    this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
+    this.scmreport = JSON.parse(localStorage.getItem('data'))
+    const myDate = new Date()
+    let myHour = myDate.getHours()
+    let myMinute = myDate.getMinutes()
+    if (myHour == 23 && myMinute == 59) {
+      localStorage.removeItem('Eveningreport')
+      localStorage.removeItem('Morningreport')
+    }
   },
   methods: {
     getTime: function () {
@@ -293,46 +319,47 @@ export default {
     },
     addReport() {
       this.reports.push(this.inputs)
-      console.log('scmreport', this.reports)
-      // console.log('JSON', JSON.stringify(this.reports))
-       this.name = JSON.parse(localStorage.getItem('login-name'))
-       console.log('name',this.name)
 
-      // const data =JSON.stringify(object);
-      // console.log('data',data)
-     const result =   JSON.stringify(this.reports.map(res=>({task:res.task, progress:res.progress,hour:res.hour}))
-    .reduce((map, obj, i) => (map[i] = obj, map), {}))
-    console.log('result',result);
+      this.scmreport = JSON.parse(localStorage.getItem('data'))
+      console.log('SCM Report', this.scmreport)
 
-
-    localStorage.setItem('data', result)
-
-
-
-    // localStorage.setItem('data1', JSON.stringify(this.reports))
-
-
-
-     const data =localStorage.getItem('data')
-     console.log('ddddddddddddd', data)
-      // const data ={date: 
-      // {name: localStorage.getItem('data')}}
-     
-
-      const encoded = window.btoa(unescape(encodeURIComponent(data)));
-        console.log('encoded data',encoded) 
-
-      const decoded = window.atob(unescape(encodeURIComponent(encoded)));
-      console.log('decoded data',decoded)
-
+      var result = JSON.stringify(
+        this.reports
+          .map((res) => ({
+            task: res.task,
+            progress: res.progress,
+            hour: res.hour,
+          }))
+          .reduce((map, obj, i) => ((map[i] = obj), map), {})
+      )
+      localStorage.setItem('data', result)
+      const data = localStorage.getItem('data')
+      const encoded = window.btoa(unescape(encodeURIComponent(data)))
+      const decoded = JSON.parse(
+        window.atob(unescape(encodeURIComponent(encoded)))
+      )
       this.$store.commit('storeReport', this.inputs)
-      // fetch('report.json')
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     console.log(data)
-      //   })
-      //   .catch((error) => console.error(error))
-      // localStorage.setItem('name', JSON.stringify(this.name))
+      fetch('report.json')
+        .then((response) => response.json())
+        .then((data) => {
+          let formatted_date =
+            currentdate.getDate() +
+            '-' +
+            (currentdate.getMonth() + 1) +
+            '-' +
+            currentdate.getFullYear()
+          const name = JSON.parse(localStorage.getItem('login-name'))
+          data = Object.assign(data, {
+            [formatted_date]: {
+              [name]: decoded,
+            },
+          })
+          // console.log('FETCH DATA', data)
+          this.DATA = data
+          localStorage.setItem('FETCH DATA', JSON.stringify(this.DATA))
+          this.$store.commit('fetchData', this.DATA)
+        })
+        .catch((error) => console.error(error))
       let currentdate = new Date()
       let formatted_date =
         currentdate.getDate() +
@@ -341,7 +368,7 @@ export default {
         '-' +
         currentdate.getFullYear()
 
-         $.ajax({
+      $.ajax({
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
         type: 'GET',
         headers: {
@@ -388,9 +415,8 @@ export default {
         input02: this.input02,
         input03: this.input03,
       })
-        localStorage.setItem('Morningreport', JSON.stringify(this.morningreports))
-
-       this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
+      localStorage.setItem('Morningreport', JSON.stringify(this.morningreports))
+      this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
       this.$store.commit('storeMorningReport', [
         this.input01,
         this.input02,
@@ -439,7 +465,7 @@ export default {
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/morningreport.json',
         type: 'GET',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         datatype: 'xml',
         success: function (result) {
@@ -456,7 +482,7 @@ export default {
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/morningreport.json',
         type: 'PUT',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         data: JSON.stringify({
           message: 'update json',
@@ -481,9 +507,7 @@ export default {
       })
       localStorage.setItem('Eveningreport', JSON.stringify(this.eveningreports))
 
-       this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
-         
-
+      this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
       this.$store.commit('storeEveningReport', [
         this.input1,
         this.input2,
@@ -531,7 +555,7 @@ export default {
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/eveningreport.json',
         type: 'GET',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         datatype: 'xml',
         success: function (result) {
@@ -548,7 +572,7 @@ export default {
         url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/eveningreport.json',
         type: 'PUT',
         headers: {
-          Authorization: 'Bearer  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',
+          Authorization: 'Bearer  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',
         },
         data: JSON.stringify({
           message: 'update json',

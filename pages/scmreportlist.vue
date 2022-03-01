@@ -2,18 +2,24 @@
   <div>
     <navbar></navbar>
     <div class="row mt-5">
-      <div class="col-md-1"></div>
+      <div class="col-md-1">
+        <router-link to="/" class="text-white ml-1"
+          ><button class="show-btn btn btn-success btn-sm">Back</button>
+        </router-link>
+      </div>
       <div class="col-md-7">
         <h1 class="mb-5">Daily Report</h1>
         <p>{{ this.username }}</p>
-        <span>=>{{ this.showData.task }}</span>
-        <span>({{ this.showData.progress }}%)</span>
-        <span
-          >({{ this.showData.hour }}hrs)<br />
+        <div v-for="(report, index) in scmreport" :key="index" class="mb-2">
+          <span>=>{{ report.task }}</span>
+          <span>({{ report.progress }})</span>
           <span
-            >======================================================</span
-          ></span
-        >
+            >({{ report.hour }})<br />
+            <span
+              >======================================================</span
+            ></span
+          >
+        </div>
       </div>
       <div class="col-md-4"></div>
     </div>
@@ -40,9 +46,8 @@ export default {
     }),
   },
   mounted() {
-    this.username = JSON.parse(localStorage.getItem('name'))
+    this.username = JSON.parse(localStorage.getItem('login-name'))
+    this.scmreport = JSON.parse(localStorage.getItem('data'))
   },
-  methods: {},
 }
 </script>
-

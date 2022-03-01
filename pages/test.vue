@@ -16,7 +16,6 @@
 
     <p>==================</p>
     <div>{{ this.report[0] }}</div>
-    <!-- <div>{{ this.report }}</div> -->
     <p>==================</p>
   </div>
 </template>
@@ -34,13 +33,12 @@ export default {
     testing() {
       axios.get('/data.json').then((response) => {
         this.result = response.data
-        // console.log('rrrrrr',this.result);
       })
     },
     reporttesting() {
       axios.get('/report.json').then((response) => {
         this.report = response.data
-        console.log(this.report[0])
+        console.log('report testing', this.report)
       })
     },
   },

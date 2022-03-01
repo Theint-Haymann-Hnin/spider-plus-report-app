@@ -60,16 +60,16 @@ export default {
   },
   methods: {
     submit() {
-      let date= new Date();
-      let name="theint";
+      let date = new Date()
+      let name = 'theint'
       var object = {
         date: {
           name: {
-             Email: this.email,
-        Phone: this.phone,
-        Information: this.information,
-          }
-        }
+            Email: this.email,
+            Phone: this.phone,
+            Information: this.information,
+          },
+        },
       }
       console.log('object', object)
 
@@ -111,7 +111,6 @@ export default {
           sha: this.sha,
         }),
         success: function (result) {
-          //  console.log(result.content)
           $('#response').append(JSON.stringify(result))
         },
         error: function (error) {

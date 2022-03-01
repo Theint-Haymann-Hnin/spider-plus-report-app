@@ -39,7 +39,6 @@ export default {
       username: '',
     }
   },
-
   computed: {
     ...mapState({
       showEveningData: (state) => state.eveningreport,
