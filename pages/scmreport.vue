@@ -2,7 +2,8 @@
   <div>
     <navbar></navbar>
     <!-- scm report (12 to 5) -->
-    <div v-if="this.currenttime > 11 && this.currenttime < 13">
+    <!-- <div v-if="this.currenttime > 11 && this.currenttime < 13"> -->
+    <div>
       <div class="row mt-2">
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
@@ -83,11 +84,7 @@
               </div>
               <span> </span>
             </div>
-            <button
-              class="btn btn-success"
-              @click.prevent="addReport()"
-              :disabled="inputs.task && inputs.progress && inputs.hour === ''"
-            >
+            <button class="btn btn-success" @click.prevent="addReport()">
               Create
             </button>
           </form>
