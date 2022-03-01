@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
-    <!-- scm report (12 to 5) -->
+    <!-- scm report -->
     <div v-if="this.currenttime > 11 && this.currenttime < 13">
       <div class="row mt-2">
         <div class="col-md-3"></div>
@@ -71,14 +71,14 @@
                   >
                     -
                   </button>
-                  <!-- <button
+                  <button
                     type="button"
                     class="btn btn-success ml-2"
                     @click="add(k)"
                     v-show="k == inputs.length - 1"
                   >
                     +
-                  </button> -->
+                  </button>
                 </div>
               </div>
               <span> </span>
@@ -165,7 +165,7 @@
     </div>
     <!-- morning report -->
     <!-- evening report  -->
-    <div class="row mt-5" v-if="this.currenttime > 11 && this.currenttime < 16">
+    <div class="row mt-5" v-if="this.currenttime > 11 && this.currenttime < 19">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
