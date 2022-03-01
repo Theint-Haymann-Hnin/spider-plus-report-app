@@ -2,8 +2,7 @@
   <div>
     <navbar></navbar>
     <!-- scm report (12 to 5) -->
-    <!-- <div v-if="this.currenttime > 11 && this.currenttime < 13"> -->
-    <div>
+    <div v-if="this.currenttime > 11 && this.currenttime < 13">
       <div class="row mt-2">
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
