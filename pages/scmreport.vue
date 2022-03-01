@@ -148,9 +148,9 @@
           </div>
         </div>
         <div class="mt-5">
-          <p>{{ this.name }}</p>
           <div class="mb-2" v-for="(morningreport, index) in fff" :key="index">
             <p>Morning report</p>
+            <p>{{ morningreport.name }}</p>
             <span
               >・今日やること<br />=>{{ morningreport.input01 }}<br /><br />
               ・困っていること<br />=>{{ morningreport.input02 }}<br /><br />
@@ -202,9 +202,9 @@
           </div>
         </div>
         <div class="mt-5">
-          <p>{{ this.name }}</p>
           <div class="mb-2" v-for="(eveningreport, index) in ggg" :key="index">
             <p>Evening report</p>
+            <p>{{ eveningreport.name }}</p>
             <span
               >・完了チケット一覧<br />=>{{ eveningreport.input1 }}<br /><br />
               ・対応中チケット一覧 ％<br />=>{{ eveningreport.input2
@@ -410,10 +410,12 @@ export default {
       this.reports.splice(index, 1)
     },
     createMorningreport() {
+      this.name = JSON.parse(localStorage.getItem('login-name'))
       this.morningreports.push({
         input01: this.input01,
         input02: this.input02,
         input03: this.input03,
+        name: this.name,
       })
       localStorage.setItem('Morningreport', JSON.stringify(this.morningreports))
       this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
@@ -426,87 +428,16 @@ export default {
       this.input01 = ''
       this.input02 = ''
       this.input03 = ''
-      let currentdate = new Date()
-      let formatted_date =
-        currentdate.getDate() +
-        '-' +
-        (currentdate.getMonth() + 1) +
-        '-' +
-        currentdate.getFullYear()
-      const encoded = window.btoa(
-        '{' +
-          '"' +
-          formatted_date +
-          '"' +
-          ':' +
-          '{' +
-          '"' +
-          this.name +
-          ':' +
-          '{' +
-          '"today job"' +
-          ':' +
-          this.input01 +
-          ',' +
-          '"any trouble"' +
-          ':' +
-          this.input02 +
-          ',' +
-          '"any sharing"' +
-          ':' +
-          this.input03 +
-          '}' +
-          '}' +
-          '}'
-      )
-      console.log(encoded)
-
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/morningreport.json',
-        type: 'GET',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        datatype: 'xml',
-        success: function (result) {
-          localStorage.setItem('sha', result.sha)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log(error.responseJSON)
-        },
-      })
-      this.sha = localStorage.getItem('sha')
-
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/morningreport.json',
-        type: 'PUT',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        data: JSON.stringify({
-          message: 'update json',
-          content: encoded,
-          sha: this.sha,
-        }),
-        success: function (result) {
-          console.log(result.content)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log('error.responseJSON')
-        },
-      })
-      const decoded = window.atob(encoded)
     },
     createEveningreport() {
+      this.name = JSON.parse(localStorage.getItem('login-name'))
       this.eveningreports.push({
         input1: this.input1,
         input2: this.input2,
         input3: this.input3,
+        name: this.name,
       })
       localStorage.setItem('Eveningreport', JSON.stringify(this.eveningreports))
-
       this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
       this.$store.commit('storeEveningReport', [
         this.input1,
@@ -516,78 +447,6 @@ export default {
       this.input1 = ''
       this.input2 = ''
       this.input3 = ''
-      let currentdate = new Date()
-      let formatted_date =
-        currentdate.getDate() +
-        '-' +
-        (currentdate.getMonth() + 1) +
-        '-' +
-        currentdate.getFullYear()
-      const encoded = window.btoa(
-        '{' +
-          '"' +
-          formatted_date +
-          '"' +
-          ':' +
-          '{' +
-          '"' +
-          this.name +
-          ':' +
-          '{' +
-          '"done job list"' +
-          ':' +
-          this.input1 +
-          ',' +
-          '"doing job show percentage(%)"' +
-          ':' +
-          this.input2 +
-          ',' +
-          '"any trouble/ any review"' +
-          ':' +
-          this.input3 +
-          '}' +
-          '}' +
-          '}'
-      )
-      console.log(encoded)
-
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/eveningreport.json',
-        type: 'GET',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        datatype: 'xml',
-        success: function (result) {
-          localStorage.setItem('sha', result.sha)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log(error.responseJSON)
-        },
-      })
-      this.sha1 = localStorage.getItem('sha')
-
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/eveningreport.json',
-        type: 'PUT',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        data: JSON.stringify({
-          message: 'update json',
-          content: encoded,
-          sha: this.sha1,
-        }),
-        success: function (result) {
-          console.log(result.content)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log('error.responseJSON')
-        },
-      })
-      const decoded = window.atob(encoded)
     },
   },
 }
