@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div style="overflow:hidden;">
     <navbar></navbar>
     <!-- scm report -->
-    <div v-if="this.currenttime > 11 && this.currenttime < 13">
-      <div class="row mt-2">
+    <div v-if="this.currenttime > 14 && this.currenttime < 18">
+      <!-- <div class="row mt-2">
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
@@ -14,8 +14,8 @@
             </button></router-link
           >
         </div>
-      </div>
-      <div class="row mt-2">
+      </div> -->
+      <div class="row mt-3">
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
         <div class="col-md-3"></div>
@@ -42,7 +42,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Task"
-                    v-model="inputs.task"
+                    v-model="input.task"
                   />
                   <br />
                 </div>
@@ -51,7 +51,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Finished (%)"
-                    v-model="inputs.progress"
+                    v-model="input.progress"
                   />
                 </div>
                 <div class="col-md-2">
@@ -59,7 +59,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Hours"
-                    v-model="inputs.hour"
+                    v-model="input.hour"
                   />
                 </div>
                 <div class="col-md-2">
@@ -67,7 +67,7 @@
                     type="button"
                     class="btn btn-danger"
                     @click="remove(k)"
-                    v-show="k || (!k && inputs.length > 1)"
+                    v-show="k || (!k && input.length > 1)"
                   >
                     -
                   </button>
@@ -95,9 +95,9 @@
         <div class="col-md-8">
           <p>{{ this.name }}</p>
           <!-- <div v-for="(report, index) in reports" :key="index" class="mb-2">
-            <span>=>{{ inputs.task }}</span>
-            <span>({{ inputs.progress }})</span>
-            <span>({{ inputs.hour }})</span
+            <span>=>{{ input.task }}</span>
+            <span>({{ input.progress }})</span>
+            <span>({{ input.hour }})</span
             ><button
               class="btn btn-danger btn-sm ml-3"
               @click.prevent="removeReport(index)"
@@ -116,7 +116,7 @@
     </div>
     <!-- scm report -->
     <!-- morning report-->
-    <div class="row mt-5" v-if="this.currenttime > 7 && this.currenttime < 11">
+    <div class="row mt-5" v-if="this.currenttime > 7 && this.currenttime < 12">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -165,7 +165,7 @@
     </div>
     <!-- morning report -->
     <!-- evening report  -->
-    <div class="row mt-5" v-if="this.currenttime > 11 && this.currenttime < 19">
+    <div class="row mt-5" v-if="this.currenttime >12 && this.currenttime < 15">
       <div class="col-md-3"></div>
       <div class="form col-md-6">
         <div class="card">
@@ -285,7 +285,7 @@ export default {
   mounted() {
     this.ggg = JSON.parse(localStorage.getItem('Eveningreport') || '[]')
     this.fff = JSON.parse(localStorage.getItem('Morningreport') || '[]')
-    this.scmreport = JSON.parse(localStorage.getItem('data'))
+    this.scmreport = JSON.parse(localStorage.getItem('data') || '[]')
     const myDate = new Date()
     let myHour = myDate.getHours()
     let myMinute = myDate.getMinutes()
@@ -314,11 +314,10 @@ export default {
       this.inputs.splice(index, 1)
     },
     addReport() {
-      this.reports.push(this.inputs)
-
-      this.scmreport = JSON.parse(localStorage.getItem('data'))
-      console.log('SCM Report', this.scmreport)
-
+      this.name = JSON.parse(localStorage.getItem('login-name'))
+      for (var i in this.inputs) {
+        this.reports.push(this.inputs[i])
+      }
       var result = JSON.stringify(
         this.reports
           .map((res) => ({
@@ -329,77 +328,79 @@ export default {
           .reduce((map, obj, i) => ((map[i] = obj), map), {})
       )
       localStorage.setItem('data', result)
-      const data = localStorage.getItem('data')
-      const encoded = window.btoa(unescape(encodeURIComponent(data)))
-      const decoded = JSON.parse(
-        window.atob(unescape(encodeURIComponent(encoded)))
-      )
-      this.$store.commit('storeReport', this.inputs)
-      fetch('report.json')
-        .then((response) => response.json())
-        .then((data) => {
-          let formatted_date =
-            currentdate.getDate() +
-            '-' +
-            (currentdate.getMonth() + 1) +
-            '-' +
-            currentdate.getFullYear()
-          const name = JSON.parse(localStorage.getItem('login-name'))
-          data = Object.assign(data, {
-            [formatted_date]: {
-              [name]: decoded,
-            },
-          })
-          // console.log('FETCH DATA', data)
-          this.DATA = data
-          localStorage.setItem('FETCH DATA', JSON.stringify(this.DATA))
-          this.$store.commit('fetchData', this.DATA)
-        })
-        .catch((error) => console.error(error))
-      let currentdate = new Date()
-      let formatted_date =
-        currentdate.getDate() +
-        '-' +
-        (currentdate.getMonth() + 1) +
-        '-' +
-        currentdate.getFullYear()
+      this.scmreport = JSON.parse(localStorage.getItem('data'))
+      // const encoded =JSON.stringify(window.btoa(unescape(encodeURIComponent(this.scmreport))))
+      // console.log('eccoded value', encoded)
+      // const decoded = JSON.parse(
+      //   window.atob(unescape(encodeURIComponent(encoded)))
+      // )
+      //  console.log('decoded value', decoded)
+      // this.$store.commit('storeReport', this.inputs)
+      // fetch('report.json')
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     let formatted_date =
+      //       currentdate.getDate() +
+      //       '-' +
+      //       (currentdate.getMonth() + 1) +
+      //       '-' +
+      //       currentdate.getFullYear()
+      //     const name = JSON.parse(localStorage.getItem('login-name'))
+      //     data = Object.assign(data, {
+      //       [formatted_date]: {
+      //         [name]: decoded,
+      //       },
+      //     })
+      //     // console.log('FETCH DATA', data)
+      //     this.DATA = data
+      //     localStorage.setItem('FETCH DATA', JSON.stringify(this.DATA))
+      //     this.$store.commit('fetchData', this.DATA)
+      //   })
+      //   .catch((error) => console.error(error))
+      // let currentdate = new Date()
+      // let formatted_date =
+      //   currentdate.getDate() +
+      //   '-' +
+      //   (currentdate.getMonth() + 1) +
+      //   '-' +
+      //   currentdate.getFullYear()
 
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
-        type: 'GET',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        datatype: 'xml',
-        success: function (result) {
-          localStorage.setItem('sha', result.sha)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log(error.responseJSON)
-        },
-      })
-      this.sha = localStorage.getItem('sha')
+      // $.ajax({
+      //   url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
+      //   type: 'GET',
+      //   headers: {
+      //     Authorization: 'Bearer  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',
+      //   },
+      //   datatype: 'xml',
+      //   success: function (result) {
+      //     localStorage.setItem('sha', result.sha)
+      //     $('#response').append(JSON.stringify(result))
+      //   },
+      //   error: function (error) {
+      //     console.log(error.responseJSON)
+      //   },
+      // })
+      // this.sha = localStorage.getItem('sha')
 
-      $.ajax({
-        url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
-        type: 'PUT',
-        headers: {
-          Authorization: 'Bearer  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',
-        },
-        data: JSON.stringify({
-          message: 'update json',
-          content: encoded,
-          sha: this.sha,
-        }),
-        success: function (result) {
-          console.log(result.content)
-          $('#response').append(JSON.stringify(result))
-        },
-        error: function (error) {
-          console.log('error.responseJSON')
-        },
-      })
+      // $.ajax({
+      //   url: 'https://api.github.com/repos/Theint-Haymann-Hnin/spider-plus-report-app/contents/static/report.json',
+      //   type: 'PUT',
+      //   headers: {
+      //     Authorization: 'Bearer  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',
+      //   },
+      //   data: JSON.stringify({
+      //     message: 'update json',
+      //     content: encoded,
+      //     sha: this.sha,
+      //   }),
+      //   success: function (result) {
+      //     console.log(result.content)
+      //     $('#response').append(JSON.stringify(result))
+      //   },
+      //   error: function (error) {
+      //     console.log('error.responseJSON')
+      //   },
+      // })
     },
 
     removeReport(index) {

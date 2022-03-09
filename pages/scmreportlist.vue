@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden">
     <navbar></navbar>
     <div class="row mt-5">
       <div class="col-md-1">
@@ -13,13 +13,9 @@
         <div v-for="(report, index) in scmreport" :key="index" class="mb-2">
           <span>=>{{ report.task }}</span>
           <span>({{ report.progress }})</span>
-          <span
-            >({{ report.hour }})<br />
-            <span
-              >======================================================</span
-            ></span
-          >
+          <span>({{ report.hour }})<br /> </span>
         </div>
+        <span>======================================================</span>
       </div>
       <div class="col-md-4"></div>
     </div>
